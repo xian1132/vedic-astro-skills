@@ -211,6 +211,54 @@ def section(no, cn, en, sub):
 
 
 # =====================================================================
+# 研究框架 / 分析逻辑主线
+# =====================================================================
+s = slide(); bg(s, LIGHT)
+header(s, "", "研究框架：分析逻辑主线")
+txt(s, Inches(0.55), Inches(1.25), Inches(12.2), Inches(0.6),
+    [{'text': '遵循「先分析、后战略、再评价」的逻辑闭环：以环境分析为依据推导整体战略，'
+              '用战略地图落地为可衡量目标，最终回到数据评价执行成效。',
+      'size': 14, 'color': INK, 'line_spacing': 1.3}])
+flow = [
+    ("①", "企业背景", "Company Profile", "行业地位、商业模式、\n发展历程", PROC),
+    ("②", "战略环境分析", "PEST·五力·SWOT", "宏观环境、行业结构、\n内外部优劣机会威胁", CUS),
+    ("③", "提出整体战略", "Strategy", "总成本领先 + 总体战略\n（规模/品牌/供应链/数字化）", PRIMARY),
+    ("④", "战略地图(BSC)", "Strategy Map", "财务/客户/内部流程/学习成长\n四维目标与 KPI", LEARN),
+    ("⑤", "执行评价", "Evaluation", "目标达成对照、偏差归因、\n实践借鉴与启示", ACCENT),
+]
+n = len(flow); x0 = 0.55; total_w = 12.2
+bw = 2.18; gap_f = (total_w - bw * n) / (n - 1)
+y = 2.4; bh = 2.9
+for i, (no, t1, en, t2, col) in enumerate(flow):
+    x = x0 + i * (bw + gap_f)
+    rect(s, Inches(x), Inches(y), Inches(bw), Inches(bh), fill=WHITE, line=col, line_w=Pt(1.5))
+    rect(s, Inches(x), Inches(y), Inches(bw), Inches(0.95), fill=col)
+    txt(s, Inches(x), Inches(y + 0.05), Inches(bw), Inches(0.9),
+        [{'text': no, 'size': 26, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER}],
+        anchor=MSO_ANCHOR.MIDDLE)
+    txt(s, Inches(x + 0.1), Inches(y + 1.05), Inches(bw - 0.2), Inches(1.75),
+        [{'text': t1, 'size': 15, 'color': col, 'bold': True, 'align': PP_ALIGN.CENTER,
+          'space_after': 3},
+         {'text': en, 'size': 10, 'color': GRAY, 'align': PP_ALIGN.CENTER, 'font': FONT_EN,
+          'space_after': 8},
+         {'text': t2, 'size': 11, 'color': INK, 'align': PP_ALIGN.CENTER, 'line_spacing': 1.2}])
+    if i < n - 1:
+        ar = s.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW,
+                                Inches(x + bw + 0.02), Inches(y + bh / 2 - 0.18),
+                                Inches(gap_f - 0.04), Inches(0.36))
+        ar.fill.solid(); ar.fill.fore_color.rgb = RGBColor(0xCF, 0xBF, 0xBA)
+        ar.line.fill.background(); ar.shadow.inherit = False
+rect(s, Inches(0.55), Inches(5.65), Inches(12.2), Inches(1.0), fill=WHITE, line=LINE_GRAY, line_w=Pt(1))
+rect(s, Inches(0.55), Inches(5.65), Inches(0.1), Inches(1.0), fill=PRIMARY)
+txt(s, Inches(0.8), Inches(5.65), Inches(11.8), Inches(1.0),
+    [{'text': [{'text': '核心主线：', 'size': 13, 'color': PRIMARY, 'bold': True},
+               {'text': '环境分析（②）是战略提出（③）的依据 → 战略经由战略地图（④）转化为四维度可衡量目标 '
+                        '→ 用真实数据回到执行评价（⑤），形成「分析—战略—落地—评价」闭环。',
+                'size': 13, 'color': INK}], 'line_spacing': 1.3}], anchor=MSO_ANCHOR.MIDDLE)
+page(s)
+
+
+# =====================================================================
 # 01 案例介绍
 # =====================================================================
 section("01", "案例介绍", "Company Profile", "企业背景 · 创始人故事 · 股权结构 · 商业模式")
@@ -343,7 +391,7 @@ pest = [
         "直接复用集团全流程数字化能力（选品/采购/仓储/门店管理），无需重复建设",
         "库存周转 11.6 天、物流 24 小时达，行业领先，支撑大规模精细化运营"]),
 ]
-bw = 6.0; bh = 2.45; xs = [0.55, 6.78]; ys = [1.35, 3.95]
+bw = 6.0; bh = 2.3; xs = [0.55, 6.78]; ys = [1.3, 3.68]
 for i, (L, name, col, pts) in enumerate(pest):
     x = xs[i % 2]; y = ys[i // 2]
     rect(s, Inches(x), Inches(y), Inches(bw), Inches(bh), fill=WHITE, line=LINE_GRAY, line_w=Pt(1))
@@ -357,6 +405,21 @@ for i, (L, name, col, pts) in enumerate(pest):
                                {'text': p, 'size': 12, 'color': INK}],
                       'space_after': 5, 'line_spacing': 1.2})
     txt(s, Inches(x + 1.25), Inches(y + 0.15), Inches(bw - 1.45), Inches(bh - 0.3), lines)
+# 关键数据条
+dby = 6.18
+rect(s, Inches(0.55), Inches(dby), Inches(12.2), Inches(0.72), fill=PRIMARY)
+data_pts = [("25%+", "赛道复合增速"), ("163.28亿", "2024集团营收"), ("5.6%→9.7%", "并入后毛利率"),
+            ("11.6天", "库存周转"), ("+80%", "即时零售订单增")]
+dw = 12.2 / len(data_pts)
+for i, (v, lab) in enumerate(data_pts):
+    dx = 0.55 + i * dw
+    txt(s, Inches(dx), Inches(dby + 0.06), Inches(dw), Inches(0.62),
+        [{'text': v, 'size': 17, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER},
+         {'text': lab, 'size': 10, 'color': RGBColor(0xF7, 0xDD, 0xDA), 'align': PP_ALIGN.CENTER,
+          'space_before': 1}], anchor=MSO_ANCHOR.MIDDLE)
+    if i:
+        rect(s, Inches(dx), Inches(dby + 0.14), Pt(1), Inches(0.44), fill=RGBColor(0xD8, 0x6A, 0x66))
+txt(s, Inches(0.55), Inches(dby - 0.02), Inches(12.2), Inches(0.0), [])
 page(s)
 
 # --- 波特五力 ---
@@ -374,13 +437,13 @@ txt(s, Inches(cx - 1.7), Inches(cy - 0.7), Inches(3.4), Inches(1.4),
       'space_before': 2, 'line_spacing': 1.1}], anchor=MSO_ANCHOR.MIDDLE)
 forces = [
     (cx - 1.7, 1.35, 3.4, 1.15, "潜在进入者", "中", PROC,
-     "赛道进入整合期，新品牌独立突围难；威胁来自上游制造商向下整合"),
+     "赛道进入整合期(CR2≈鸣鸣很忙+万辰)，新品牌独立突围难；威胁来自上游(盐津/好想你)向下整合"),
     (cx - 1.7, 5.55, 3.4, 1.15, "替代品", "中", LEARN,
-     "传统商超/便利店/社区团购/电商替代；「多快好省」锁定年轻客群"),
+     "传统商超/便利店/社区团购/电商替代；「多快好省」+ 5000+ 门店锁定年轻客群"),
     (0.55, cy - 0.95, 4.0, 1.9, "供应商议价力", "弱", CUS,
-     "集团第二大品牌 + 联合采购规模 → 极强议价力；定制化产品深度绑定供应商"),
+     "集团联合采购规模 → 直采占比 92.3%、议价力极强；34% SKU 为合作定制深度绑定供应商"),
     (8.78, cy - 0.95, 4.0, 1.9, "购买者议价力", "中/弱", ACCENT,
-     "消费者价格敏感但忠诚度建立中；加盟商高度依赖品牌、单体无议价力"),
+     "消费者价格敏感但复购率达 75%；加盟商高度依赖品牌、单体无议价力，但可转投竞品"),
 ]
 for x, y, w, h, name, lv, col, desc in forces:
     rect(s, Inches(x), Inches(y), Inches(w), Inches(h), fill=WHITE, line=col, line_w=Pt(2))
@@ -440,6 +503,62 @@ for i, (name, col, pts) in enumerate(swot):
                                {'text': p, 'size': 11.5, 'color': INK}],
                       'space_after': 4, 'line_spacing': 1.15})
     txt(s, Inches(x + 0.25), Inches(y + 0.62), Inches(bw - 0.5), Inches(bh - 0.7), lines)
+page(s)
+
+# --- SWOT 战略矩阵：分析 → 战略推导 ---
+s = slide(); bg(s)
+header(s, "02", "SWOT 战略矩阵：从分析推导战略")
+txt(s, Inches(0.55), Inches(1.22), Inches(12.2), Inches(0.5),
+    [{'text': '将内部优劣势与外部机会威胁交叉匹配，推导 SO/ST/WO/WT 四类战略，'
+              '收敛为企业整体战略——这是「先分析、后战略」的关键一步。',
+      'size': 13, 'color': INK, 'line_spacing': 1.25}])
+# 表头行/列
+gx, gy = 2.0, 1.95
+ch, cw = 1.82, 4.55
+# 角标
+rect(s, Inches(0.55), Inches(gy), Inches(gx - 0.55), Inches(0.55), fill=PRIMARY_DK)
+txt(s, Inches(0.55), Inches(gy), Inches(gx - 0.55), Inches(0.55),
+    [{'text': '内部＼外部', 'size': 11, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER}],
+    anchor=MSO_ANCHOR.MIDDLE)
+# 列标题 O / T
+for j, (lab, col) in enumerate([("机会 O", LEARN), ("威胁 T", PRIMARY)]):
+    rect(s, Inches(gx + j * cw), Inches(gy), Inches(cw), Inches(0.55), fill=col)
+    txt(s, Inches(gx + j * cw), Inches(gy), Inches(cw), Inches(0.55),
+        [{'text': lab, 'size': 14, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER}],
+        anchor=MSO_ANCHOR.MIDDLE)
+# 行标题 S / W
+for i, (lab, col) in enumerate([("优势 S", PROC), ("劣势 W", CUS)]):
+    ry = gy + 0.55 + i * ch
+    rect(s, Inches(0.55), Inches(ry), Inches(gx - 0.55), Inches(ch), fill=col)
+    txt(s, Inches(0.55), Inches(ry), Inches(gx - 0.55), Inches(ch),
+        [{'text': lab, 'size': 14, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER}],
+        anchor=MSO_ANCHOR.MIDDLE)
+# 四个象限
+cells = [
+    ("SO 增长型战略（进攻）", PROC,
+     "用集团赋能 + 区域品牌优势，抢抓全国化与北方下沉机会：加速门店扩张、承接集团资源、规模深耕。"),
+    ("ST 多元化战略（防御）", PRIMARY,
+     "以成本与供应链优势应对竞争与替代：发力自有品牌差异化、与零食很忙区域错位、强化食安管控。"),
+    ("WO 扭转型战略", LEARN,
+     "补品牌与管理短板抓机会：借上市资本提升北方/全国品牌力、规范加盟体系、提升单店盈利模型。"),
+    ("WT 防御型战略", CUS,
+     "降风险、守底线：标准化加盟管控防食安连锁风险、平衡双品牌竞合、强化加盟商赋能稳忠诚度。"),
+]
+for idx, (title, col, desc) in enumerate(cells):
+    i, j = idx // 2, idx % 2
+    cxx = gx + j * cw; cyy = gy + 0.55 + i * ch
+    rect(s, Inches(cxx), Inches(cyy), Inches(cw), Inches(ch), fill=WHITE, line=col, line_w=Pt(1.25))
+    txt(s, Inches(cxx + 0.15), Inches(cyy + 0.1), Inches(cw - 0.3), Inches(ch - 0.2),
+        [{'text': title, 'size': 13, 'color': col, 'bold': True, 'space_after': 5},
+         {'text': desc, 'size': 11.5, 'color': INK, 'line_spacing': 1.25}])
+# 收敛箭头 + 总战略
+arr = s.shapes.add_shape(MSO_SHAPE.DOWN_ARROW, Inches(6.2), Inches(gy + 0.55 + 2 * ch + 0.02),
+                         Inches(0.45), Inches(0.28))
+arr.fill.solid(); arr.fill.fore_color.rgb = ACCENT; arr.line.fill.background(); arr.shadow.inherit = False
+rect(s, Inches(0.55), Inches(6.5), Inches(12.2), Inches(0.48), fill=PRIMARY)
+txt(s, Inches(0.55), Inches(6.5), Inches(12.2), Inches(0.48),
+    [{'text': '收敛为整体战略：规模深耕 + 品牌提质 + 供应链提效 + 数字化赋能（以 SO 进攻为主线）',
+      'size': 13.5, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER}], anchor=MSO_ANCHOR.MIDDLE)
 page(s)
 
 
@@ -515,6 +634,62 @@ for name, col, tag, desc in axes:
 txt(s, Inches(0.55), Inches(6.55), Inches(12.2), Inches(0.4),
     [{'text': '战略愿景：通过「核心稳固、运营提效、业态创新」三位一体，构建全链路、可持续的商业增长闭环。',
       'size': 13, 'color': PRIMARY, 'bold': True, 'align': PP_ALIGN.CENTER}])
+page(s)
+
+# --- 战略优劣势（优缺）评价 ---
+s = slide(); bg(s)
+header(s, "03", "战略评价：总成本领先战略的优势与风险")
+txt(s, Inches(0.55), Inches(1.22), Inches(12.2), Inches(0.5),
+    [{'text': '任何战略都有两面性。客观评价所选战略的优点与潜在风险，是判断其可持续性的前提。',
+      'size': 13, 'color': INK, 'line_spacing': 1.25}])
+# 优势列
+pros = [
+    "规模 + 直采(92.3%)构筑成本护城河，价格优势难被模仿",
+    "「质价比」精准契合下沉市场消费分级红利，客群基数大",
+    "数字化供应链(物流1.7%、周转11.6天)支撑高效扩张",
+    "加盟模式轻资产、扩张快，5000+ 门店形成网络规模效应",
+]
+cons = [
+    "公司层面毛利仅 7.6%，薄利依赖规模，抗风险能力弱",
+    "易陷价格战，与零食很忙/万辰同质化竞争激烈",
+    "重加盟 → 食安与品控连锁风险，单店事件易波及品牌",
+    "「低价低质」标签风险，品牌升级与自有品牌培育需长期投入",
+]
+measures = [
+    "发力自有品牌(→30%)与定制爆款，提毛利、去同质化",
+    "标准化加盟管控 + 培训赋能，守食安底线、稳加盟商",
+    "区域错位 + 北方深耕，避开正面价格战",
+    "数字化由系统建设转向流程再造，向效率驱动转型",
+]
+col_data = [("战略优势 Pros", PROC, pros), ("潜在风险/缺点 Cons", PRIMARY, cons)]
+bw2 = 6.0; xs2 = [0.55, 6.78]; y2 = 1.95; bh2 = 2.85
+for k, (title, col, items) in enumerate(col_data):
+    x = xs2[k]
+    rect(s, Inches(x), Inches(y2), Inches(bw2), Inches(bh2), fill=WHITE, line=col, line_w=Pt(1.5))
+    rect(s, Inches(x), Inches(y2), Inches(bw2), Inches(0.55), fill=col)
+    txt(s, Inches(x), Inches(y2), Inches(bw2), Inches(0.55),
+        [{'text': title, 'size': 16, 'color': WHITE, 'bold': True, 'align': PP_ALIGN.CENTER}],
+        anchor=MSO_ANCHOR.MIDDLE)
+    lines = []
+    for it in items:
+        mark = "✓ " if k == 0 else "⚠ "
+        lines.append({'text': [{'text': mark, 'size': 12.5, 'color': col, 'bold': True},
+                               {'text': it, 'size': 12.5, 'color': INK}],
+                      'space_after': 9, 'line_spacing': 1.2})
+    txt(s, Inches(x + 0.3), Inches(y2 + 0.68), Inches(bw2 - 0.6), Inches(bh2 - 0.8), lines)
+# 应对措施条
+my = y2 + bh2 + 0.18
+rect(s, Inches(0.55), Inches(my), Inches(12.2), Inches(1.55), fill=LIGHT)
+rect(s, Inches(0.55), Inches(my), Inches(0.1), Inches(1.55), fill=ACCENT)
+txt(s, Inches(0.8), Inches(my + 0.08), Inches(11.8), Inches(0.4),
+    [{'text': '应对措施（扬长补短）', 'size': 14, 'color': PRIMARY, 'bold': True}])
+mw = (12.2 - 0.4) / 2
+for i, m in enumerate(measures):
+    mx = 0.85 + (i % 2) * mw
+    myy = my + 0.5 + (i // 2) * 0.52
+    txt(s, Inches(mx), Inches(myy), Inches(mw - 0.2), Inches(0.5),
+        [{'text': [{'text': '▶ ', 'size': 11.5, 'color': ACCENT, 'bold': True},
+                   {'text': m, 'size': 11.5, 'color': INK}], 'line_spacing': 1.15}])
 page(s)
 
 
@@ -792,6 +967,39 @@ for name, col, txt_c in concl:
     txt(s, Inches(3.05), Inches(y + 0.1), Inches(9.55), Inches(1.0),
         [{'text': txt_c, 'size': 13, 'color': INK, 'line_spacing': 1.3}], anchor=MSO_ANCHOR.MIDDLE)
     y += 1.32
+page(s)
+
+# --- 实践借鉴与启示 ---
+s = slide(); bg(s)
+header(s, "05", "实践借鉴：对零食量贩/连锁加盟行业的启示")
+txt(s, Inches(0.55), Inches(1.22), Inches(12.2), Inches(0.5),
+    [{'text': '跳出个案，赵一鸣的成长路径对量贩零食及连锁加盟企业具有可复制的普适借鉴价值。',
+      'size': 13, 'color': INK, 'line_spacing': 1.25}])
+ins = [
+    ("供应链即护城河", PROC, "源头直采、去经销商化是低价模式的根基。",
+     "成本领先企业应把供应链整合(直采、定制、仓配网络)作为核心能力，而非单纯压价。"),
+    ("规模 × 数字化", LEARN, "用数字化(WMS/TMS/ERP、智能选品)放大规模优势。",
+     "连锁扩张须以数字化中台支撑，实现库存、选品、补货精细化，避免规模不经济。"),
+    ("加盟商共赢", ACCENT, "「帮加盟商赚钱」是加盟网络可持续的前提。",
+     "标准化培训 + 单店盈利模型 + 食安管控，是加盟连锁稳定与口碑的关键。"),
+    ("区域错位竞争", CUS, "双品牌南北/东西错位，减少内耗。",
+     "在红海赛道，差异化定位与区域聚焦比正面价格战更能构筑壁垒。"),
+    ("BSC 落地战略", PRIMARY, "用平衡计分卡把战略转化为可衡量、可追踪的目标。",
+     "目标应分层、设过程指标，强化「能力→流程→客户→财务」因果传导，闭环管理。"),
+    ("第二增长曲线", FIN, "在巩固核心的同时布局健康化/功能化新业态。",
+     "成熟期企业需提前培育创新业态(如新鲜零食)，对冲主业增速放缓风险。"),
+]
+bw = 4.0; bh = 2.35; gap2 = 0.1
+for idx, (title, col, lead, body) in enumerate(ins):
+    i, j = idx // 3, idx % 3
+    x = 0.55 + j * (bw + gap2); y = 1.95 + i * (bh + 0.18)
+    rect(s, Inches(x), Inches(y), Inches(bw), Inches(bh), fill=WHITE, line=LINE_GRAY, line_w=Pt(1))
+    rect(s, Inches(x), Inches(y), Inches(bw), Inches(0.5), fill=col)
+    txt(s, Inches(x + 0.15), Inches(y), Inches(bw - 0.3), Inches(0.5),
+        [{'text': title, 'size': 14, 'color': WHITE, 'bold': True}], anchor=MSO_ANCHOR.MIDDLE)
+    txt(s, Inches(x + 0.2), Inches(y + 0.6), Inches(bw - 0.4), Inches(bh - 0.7),
+        [{'text': lead, 'size': 12, 'color': col, 'bold': True, 'space_after': 6, 'line_spacing': 1.15},
+         {'text': body, 'size': 11.5, 'color': INK, 'line_spacing': 1.22}])
 page(s)
 
 # --- 谢谢 ---
